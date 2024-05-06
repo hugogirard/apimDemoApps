@@ -39,3 +39,5 @@ resource table 'Microsoft.DocumentDB/databaseAccounts/tables@2023-11-15' = {
     }    
   }
 }
+
+output cosmosdbName string = cosmosdb.name

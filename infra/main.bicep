@@ -40,3 +40,23 @@ module cosmosdb 'modules/cosmos/cosmosdb.bicep' = {
     suffix: suffix
   }
 }
+
+module monitoring 'modules/monitoring/appinsight.bicep' = {
+  scope: rg
+  name: 'monitoring'
+  params: {
+    location: location
+    suffix: suffix
+  }
+}
+
+module api 'modules/web/web.bicep' = {
+  scope: rg
+  name: 'api'
+  params: {
+    appInsightsName: monitoring.outputs.appInsightName
+    cosmosDbName: cosmosdb.outputs.cosmosdbName
+    location: location
+    suffix: suffix
+  }
+}
