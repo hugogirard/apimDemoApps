@@ -31,3 +31,12 @@ module apim './modules/apim/apim.bicep' = {
     publisherName: publisherName
   }
 }
+
+module cosmosdb 'modules/cosmos/cosmosdb.bicep' = {
+  scope: rg
+  name: 'cosmosdb'
+  params: {
+    location: location
+    suffix: suffix
+  }
+}
