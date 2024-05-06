@@ -11,7 +11,7 @@ resource cosmosdb 'Microsoft.DocumentDB/databaseAccounts@2023-11-15' existing = 
   name: cosmosDbName  
 }
 
-var cosmosDbConnectionString = cosmosdb.listConnectionStrings().connectionStrings[0].connectionString
+var cosmosDbConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${cosmosdb.name};AccountKey=${cosmosdb.listKeys().primaryMasterKey};TableEndpoint=https://${cosmosdb.name}.table.cosmos.azure.com:443/;'
 
 resource asp 'Microsoft.Web/serverfarms@2023-01-01' = {
   name: 'asp-${suffix}'

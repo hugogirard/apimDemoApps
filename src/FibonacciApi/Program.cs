@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ builder.Services.AddSingleton<IFibonacciRepository, FibonacciRepository>();
 
 var app = builder.Build();
 
+string cnxString = app.Configuration["COSMOS_CONNECTION_STRING"];
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -44,7 +46,12 @@ app.MapGet("/fibonacci/{n}", async ([FromServices] IFibonacciRepository reposito
 
 })
 .WithName("GetFibonacciNumbers")
-.WithOpenApi();
+.WithOpenApi(generatedOperation =>
+{
+    var parameter = generatedOperation.Parameters[0];
+    parameter.Description = "The sequence number to generate";
+    return generatedOperation;
+});
 
 app.MapDelete("/fibonacci/{n}", ([FromServices] IFibonacciRepository repository, int n) =>
 {
@@ -52,3 +59,5 @@ app.MapDelete("/fibonacci/{n}", ([FromServices] IFibonacciRepository repository,
 })
 .WithName("DeleteSavedSequence")
 .WithOpenApi();
+
+app.Run();

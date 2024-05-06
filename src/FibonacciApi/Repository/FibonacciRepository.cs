@@ -10,6 +10,8 @@ public class FibonacciRepository : IFibonacciRepository
 
     public FibonacciRepository(IConfiguration configuration, ILogger<FibonacciRepository> logger)
     {
+        string test = configuration["COSMOS_CONNECTION_STRING"];
+
         // New instance of the TableClient class
         TableServiceClient tableServiceClient = new TableServiceClient(configuration["COSMOS_CONNECTION_STRING"]);
 
