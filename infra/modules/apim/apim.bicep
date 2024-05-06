@@ -1,11 +1,10 @@
 param location string
-param name string
-param tags object
 param publisherName string
 param publisherEmail string
+param suffix string
 
 resource apim 'Microsoft.ApiManagement/service@2022-04-01-preview' = {
-  name: name
+  name: 'apim-${suffix}'
   location: location
   properties: {      
       publisherEmail: publisherEmail
@@ -13,8 +12,7 @@ resource apim 'Microsoft.ApiManagement/service@2022-04-01-preview' = {
   }
   identity: {
       type: 'SystemAssigned'
-  }
-  tags: tags
+  }  
   sku: {
       name: 'Developer'
       capacity: 1

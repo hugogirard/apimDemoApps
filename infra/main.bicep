@@ -14,7 +14,20 @@ param publisherName string
 param publisherEmail string
 
 
+var suffix = uniqueString(rg.id)
+
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: rgName
   location: location
+}
+
+module apim './modules/apim/apim.bicep' = {
+  scope: rg
+  name: 'apim'
+  params: {
+    location: location 
+    suffix: suffix
+    publisherEmail: publisherEmail
+    publisherName: publisherName
+  }
 }
