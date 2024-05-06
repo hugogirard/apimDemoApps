@@ -27,7 +27,7 @@ jobs:
       - name: Set Publisher Email
         run: echo "PUBLISHER_EMAIL=${{ secrets.PUBLISHER_EMAIL }}" >> $GITHUB_ENV
 
-      - name: deploy
+      - name: createResources
         id: createResources
         uses: azure/arm-deploy@v1
         with:
@@ -38,26 +38,14 @@ jobs:
           template: ./infra/main.bicep
           parameters: ./infra/main.bicepparam
             
-    #   - uses: gliech/create-github-secret-action@v1
-    #     with:
-    #       name: USER_IDENTITY_ID
-    #       value: ${{ steps.createResources.outputs.userIdentityId }}
-    #       pa_token: ${{ secrets.PA_TOKEN }}        
+      - uses: gliech/create-github-secret-action@v1
+        with:
+          name: APIM_NAME
+          value: ${{ steps.createResources.outputs.apimName }}
+          pa_token: ${{ secrets.PA_TOKEN }}        
       
-    #   - uses: gliech/create-github-secret-action@v1
-    #     with:
-    #       name: APIM_PROD_NAME
-    #       value: ${{ steps.createResources.outputs.apimProdName }}
-    #       pa_token: ${{ secrets.PA_TOKEN }}        
-          
-    #   - uses: gliech/create-github-secret-action@v1
-    #     with:
-    #       name: SPOKE_RESOURCE_GROUP_NAME
-    #       value: ${{ steps.createResources.outputs.spokeRgName }}
-    #       pa_token: ${{ secrets.PA_TOKEN }}              
-
-    #   - uses: gliech/create-github-secret-action@v1
-    #     with:
-    #       name: SUBNET_GATEWAY_ID
-    #       value: ${{ steps.createResources.outputs.subnetGatewayId }}
-    #       pa_token: ${{ secrets.PA_TOKEN }}                  
+      - uses: gliech/create-github-secret-action@v1
+        with:
+          name: FIBO_API_NAME
+          value: ${{ steps.createResources.outputs.fiboApiName }}
+          pa_token: ${{ secrets.PA_TOKEN }}        

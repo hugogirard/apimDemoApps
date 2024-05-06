@@ -60,3 +60,6 @@ module api 'modules/web/web.bicep' = {
     suffix: suffix
   }
 }
+
+output apimName string = apim.outputs.apimName
+output fiboApiName string = api.outputs.fiboApiName

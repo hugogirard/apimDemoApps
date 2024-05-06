@@ -60,3 +60,5 @@ resource web 'Microsoft.Web/sites@2023-01-01' = {
     }
   }  
 }
+
+output fiboApiName string = web.name
