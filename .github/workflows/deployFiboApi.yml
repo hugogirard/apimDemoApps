@@ -10,7 +10,8 @@ on:
 env:
   AZURE_WEBAPP_PACKAGE_PATH: './src/FibonacciApi'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '8.0.x'           # set this to the dot net version to use  
-
+  LOCATION: 'canadacentral'
+  
 jobs:
   build-and-deploy-api:
 
@@ -43,3 +44,34 @@ jobs:
         with: 
           app-name: ${{ secrets.FIBO_API_NAME }}          
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+
+  deploy-api-apim:
+    needs: build-and-deploy-api
+  
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}      
+
+      - name: Set ApimServiceName
+        run: echo "ApimServiceName=${{ secrets.APIM_NAME }}" >> $GITHUB_ENV
+
+      - name: Set ApimServiceName
+        run: echo "WebUrl=${{ secrets.FIBO_URL }}" >> $GITHUB_ENV
+        
+      - name: Deplay FIBO in APIM
+        id: createResources
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          scope: subscription
+          region: ${{ env.LOCATION }}
+          deploymentName:  ${{ github.run_id }}
+          template: ./apis/FibonacciApi/apiMetadata.bicep
+          parameters: ./apis/FibonacciApi/apiMetadata.bicepparam        
