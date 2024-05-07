@@ -1,0 +1,71 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "FibonacciApi",
+      "version": "1.0"
+    },
+    "paths": {
+      "/fibonacci/{n}": {
+        "get": {
+          "tags": [
+            "FibonacciApi"
+          ],
+          "operationId": "GetFibonacciNumbers",
+          "parameters": [
+            {
+              "name": "n",
+              "in": "path",
+              "description": "The sequence number to generate",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int32"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "FibonacciApi"
+          ],
+          "operationId": "DeleteSavedSequence",
+          "parameters": [
+            {
+              "name": "n",
+              "in": "path",
+              "description": "The sequence number delete from the store",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      }
+    },
+    "components": {}
+  }

@@ -48,4 +48,7 @@ jobs:
         with:
           name: FIBO_API_NAME
           value: ${{ steps.createResources.outputs.fiboApiName }}
-          pa_token: ${{ secrets.PA_TOKEN }}        
+          pa_token: ${{ secrets.PA_TOKEN }}        \
+
+      - name: Test Output
+        run: echo ${{ steps.createResources.outputs.fibiApiUrl }}
