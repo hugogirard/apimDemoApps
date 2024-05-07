@@ -64,3 +64,4 @@ module api 'modules/web/web.bicep' = {
 output apimName string = apim.outputs.apimName
 output fiboApiName string = api.outputs.fiboApiName
 output fibiApiUrl string = api.outputs.fibiApiUrl
+output rgName string = rg.name

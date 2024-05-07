@@ -68,10 +68,8 @@ jobs:
       - name: Deplay FIBO in APIM
         id: createResources
         uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          scope: subscription
-          region: ${{ env.LOCATION }}
+        with:                   
+          resourceGroupName: ${{ secrets.AZURE_RESOURCE_GROUP }}
           deploymentName:  ${{ github.run_id }}
           template: ./apis/FibonacciApi/apiMetadata.bicep
           parameters: ./apis/FibonacciApi/apiMetadata.bicepparam        

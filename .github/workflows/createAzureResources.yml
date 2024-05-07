@@ -55,3 +55,9 @@ jobs:
           name: FIBO_URL
           value: ${{ steps.createResources.outputs.fibiApiUrl }}
           pa_token: ${{ secrets.PA_TOKEN }}
+
+      - uses: gliech/create-github-secret-action@v1
+        with:
+          name: AZURE_RESOURCE_GROUP
+          value: ${{ steps.createResources.outputs.rgName }}
+          pa_token: ${{ secrets.PA_TOKEN }}          
