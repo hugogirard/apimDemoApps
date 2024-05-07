@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,17 +10,16 @@ builder.Services.AddSingleton<IFibonacciRepository, FibonacciRepository>();
 
 var app = builder.Build();
 
-string cnxString = app.Configuration["COSMOS_CONNECTION_STRING"];
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
 
 app.UseHttpsRedirection();
 
-app.MapGet("/fibonacci/{n}", async ([FromServices] IFibonacciRepository repository, int n) =>
+
+app.MapGet("/fibonacci/{n}", async ([FromServices]IFibonacciRepository repository, int n) => 
 {
-    var fibonacciNumber = await repository.GetSequenceAsync(n);
+    var fibonacciNumber = await repository.GetSequenceAsync(n); 
 
     if (fibonacciNumber == null)
     {
@@ -29,21 +29,12 @@ app.MapGet("/fibonacci/{n}", async ([FromServices] IFibonacciRepository reposito
             var previous = fibonacciNumbers[fibonacciNumbers.Count - 1];
             var current = fibonacciNumbers[fibonacciNumbers.Count - 2];
             fibonacciNumbers.Add(previous + current);
-        }
-
-        fibonacciNumber = new FibonacciNumber
-        {
-            RowKey = n.ToString(),
-            Sequence = fibonacciNumbers
-        };
-
-        await repository.UpdateSequenceAsync(fibonacciNumber);
-
-        return fibonacciNumbers;        
+        }        
+        await repository.UpdateSequenceAsync(n, fibonacciNumbers);
+        return fibonacciNumbers;
     }
-    return fibonacciNumber.Sequence;
-    
 
+    return JsonSerializer.Deserialize<IEnumerable<int>>(fibonacciNumber.Sequence);
 })
 .WithName("GetFibonacciNumbers")
 .WithOpenApi(generatedOperation =>
@@ -53,11 +44,25 @@ app.MapGet("/fibonacci/{n}", async ([FromServices] IFibonacciRepository reposito
     return generatedOperation;
 });
 
-app.MapDelete("/fibonacci/{n}", ([FromServices] IFibonacciRepository repository, int n) =>
+app.MapDelete("/fibonacci/{n}", async ([FromServices] IFibonacciRepository repository, int n) =>
 {
+    // Validate if the sequence exists in the storage
+    var fibonacciNumber = await repository.GetSequenceAsync(n); 
+
+    if (fibonacciNumber != null)
+    {
+        await repository.DeleteSequenceAsync(n);
+        return Results.NoContent();
+    }
+
     return Results.NoContent();
 })
 .WithName("DeleteSavedSequence")
-.WithOpenApi();
+.WithOpenApi(generatedOperation =>
+{
+    var parameter = generatedOperation.Parameters[0];
+    parameter.Description = "The sequence number delete from the store";
+    return generatedOperation;
+});
 
 app.Run();

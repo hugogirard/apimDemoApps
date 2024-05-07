@@ -1,3 +1,5 @@
+using System.Text.Json;
+using Azure;
 using Azure.Data.Tables;
 using Microsoft.Extensions.Logging;
 
@@ -10,8 +12,6 @@ public class FibonacciRepository : IFibonacciRepository
 
     public FibonacciRepository(IConfiguration configuration, ILogger<FibonacciRepository> logger)
     {
-        string test = configuration["COSMOS_CONNECTION_STRING"];
-
         // New instance of the TableClient class
         TableServiceClient tableServiceClient = new TableServiceClient(configuration["COSMOS_CONNECTION_STRING"]);
 
@@ -34,6 +34,10 @@ public class FibonacciRepository : IFibonacciRepository
             
             return fibonacciNumber?.Value ?? null;            
         }
+        catch (RequestFailedException ex) when (ex.Status == 404) // This possible error code, no needs to log it
+        {
+            return null;
+        }
         catch (Exception ex)
         {            
             _logger.LogError(ex, "Error getting sequence");
@@ -42,21 +46,36 @@ public class FibonacciRepository : IFibonacciRepository
 
     }
 
-    public async Task UpdateSequenceAsync(FibonacciNumber fibonacciNumber)
+    public async Task UpdateSequenceAsync(int len, IEnumerable<int> sequence)
     {   
         try
         {
             FibonacciNumber newSequence = new()
             {
                 PartitionKey = "fibonacci",
-                RowKey = fibonacciNumber.RowKey,
-                Sequence = fibonacciNumber.Sequence
+                RowKey = len.ToString(),
+                Sequence = JsonSerializer.Serialize(sequence)
             };
             await _tableClient.UpsertEntityAsync(newSequence);            
-        }
+        }   
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error updating sequence");                
+        }
+    }
+
+    public async Task DeleteSequenceAsync(int len)
+    {
+        try
+        {
+            await _tableClient.DeleteEntityAsync(
+                partitionKey: "fibonacci",
+                rowKey: len.ToString()
+            );
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting sequence");
         }
     }
 }
