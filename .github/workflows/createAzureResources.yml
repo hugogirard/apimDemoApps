@@ -50,5 +50,8 @@ jobs:
           value: ${{ steps.createResources.outputs.fiboApiName }}
           pa_token: ${{ secrets.PA_TOKEN }}
 
-      - name: Test Output
-        run: echo ${{ steps.createResources.outputs.fibiApiUrl }}
+      - uses: gliech/create-github-secret-action@v1
+        with:
+          name: FIBO_URL
+          value: ${{ steps.createResources.outputs.fibiApiUrl }}
+          pa_token: ${{ secrets.PA_TOKEN }}
