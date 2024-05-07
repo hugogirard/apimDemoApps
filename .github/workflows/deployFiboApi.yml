@@ -60,10 +60,10 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}      
 
       - name: Set ApimServiceName
-        run: echo "ApimServiceName=${{ secrets.APIM_NAME }}" >> $GITHUB_ENV
+        run: echo "APIM_NAME=${{ secrets.APIM_NAME }}" >> $GITHUB_ENV
 
       - name: Set ApimServiceName
-        run: echo "WebUrl=${{ secrets.FIBO_URL }}" >> $GITHUB_ENV
+        run: echo "FIBO_URL=${{ secrets.FIBO_URL }}" >> $GITHUB_ENV
         
       - name: Deplay FIBO in APIM
         id: createResources
