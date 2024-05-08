@@ -65,6 +65,16 @@ jobs:
       - name: Set ApimServiceName
         run: echo "FIBO_URL=${{ secrets.FIBO_URL }}" >> $GITHUB_ENV
         
+      - uses: cschleiden/replace-tokens@v1
+        name: Replace Policy variables
+        with:
+          tokenPrefix: '__'
+          tokenSuffix: '__'
+          files: '["apis/FibonacciApi/policy.xml"]'
+        env:
+          tenantid: ${{ secrets.TENANT_ID }}
+          audience: ${{ secrets.AUDIENCE_FIBO_API }}
+
       - name: Deplay FIBO in APIM
         id: createResources
         uses: azure/arm-deploy@v1

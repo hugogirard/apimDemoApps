@@ -3,6 +3,11 @@
         <base />
         <rate-limit calls="5" renewal-period="60">
         </rate-limit>
+       <validate-azure-ad-token tenant-id="__tenantid__" failed-validation-httpcode="401" failed-validation-error-message="Invalid JWT token">
+            <audiences>
+                <audience>__audience__</audience>
+            </audiences>
+        </validate-azure-ad-token>        
     </inbound>
     <backend>
         <base />

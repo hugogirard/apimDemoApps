@@ -58,11 +58,21 @@ resource web 'Microsoft.Web/sites@2023-01-01' = {
       ]
       netFrameworkVersion: 'v8.0'
       alwaysOn: true
+      publicNetworkAccess: 'Enabled'
       ipSecurityRestrictions: [
         {
           ipAddress: '${apimIpAddress}/32'
           action: 'Allow'
           priority: 100
+          name: 'AllowOnlyAPIM'
+          description: 'Allow only APIM'
+        }
+        {
+          ipAddress: 'Any'
+          action: 'Deny'
+          priority: 200
+          name: 'DenyAll'
+          description: 'Deny all'
         }
       ]
       ipSecurityRestrictionsDefaultAction: 'Deny'
