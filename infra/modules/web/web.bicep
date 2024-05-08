@@ -60,7 +60,7 @@ resource web 'Microsoft.Web/sites@2023-01-01' = {
       alwaysOn: true
       ipSecurityRestrictions: [
         {
-          ipAddress: apimIpAddress
+          ipAddress: '${apimIpAddress}/32'
           action: 'Allow'
           priority: 100
         }
