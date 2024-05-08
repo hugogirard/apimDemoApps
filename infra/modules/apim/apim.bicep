@@ -14,7 +14,7 @@ resource apim 'Microsoft.ApiManagement/service@2022-04-01-preview' = {
       type: 'SystemAssigned'
   }  
   sku: {
-      name: 'Developer'
+      name: 'Standard'
       capacity: 1
   }
 }
