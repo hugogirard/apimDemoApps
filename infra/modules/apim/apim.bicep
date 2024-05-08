@@ -20,3 +20,4 @@ resource apim 'Microsoft.ApiManagement/service@2022-04-01-preview' = {
 }
 
 output apimName string = apim.name
+output apimIpAddress string = apim.properties.publicIPAddresses[0]

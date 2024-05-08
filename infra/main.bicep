@@ -58,6 +58,7 @@ module api 'modules/web/web.bicep' = {
     cosmosDbName: cosmosdb.outputs.cosmosdbName
     location: location
     suffix: suffix
+    apimIpAddress: apim.outputs.apimIpAddress
   }
 }
 

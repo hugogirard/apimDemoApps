@@ -2,6 +2,7 @@ param location string
 param appInsightsName string
 param cosmosDbName string
 param suffix string
+param apimIpAddress string
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' existing = {
   name: appInsightsName
@@ -57,6 +58,14 @@ resource web 'Microsoft.Web/sites@2023-01-01' = {
       ]
       netFrameworkVersion: 'v8.0'
       alwaysOn: true
+      ipSecurityRestrictions: [
+        {
+          ipAddress: apimIpAddress
+          action: 'Allow'
+          priority: 100
+        }
+      ]
+      ipSecurityRestrictionsDefaultAction: 'Deny'
     }
   }  
 }
