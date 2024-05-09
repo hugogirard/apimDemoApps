@@ -75,11 +75,30 @@ jobs:
           tenantid: ${{ secrets.TENANT_ID }}
           audience: ${{ secrets.AUDIENCE_FIBO_API }}
 
-      - name: Deplay FIBO in APIM
+      - name: Deplay FIBO in APIM      
         id: createResources
         uses: azure/arm-deploy@v1
         with:                   
           resourceGroupName: ${{ secrets.AZURE_RESOURCE_GROUP }}
           deploymentName:  ${{ github.run_id }}
           template: ./apim/main.bicep
-          parameters: ./apim/main.bicepparam        
+          parameters: ./apim/main.bicepparam 
+          
+  deploy-api-center:
+    needs: deploy-api-apim
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}      
+
+      - name: Export FiboApi to ApiCenter
+        run: |        
+          az apim api export --api-id FibonacciApi \
+                             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+                             --service-name ${{ secrets.APIM_NAME }} \
+                             --export-format OpenApiJsonFile --file-path "/fiboApi"

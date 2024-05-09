@@ -43,10 +43,6 @@
         "name": {
             "type": "string",
             "value": "[parameters('name')]"
-        },
-        "location": {
-            "type": "string",
-            "value": "[parameters('location')]"
         }
     }
 }

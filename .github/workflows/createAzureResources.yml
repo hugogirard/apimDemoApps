@@ -47,7 +47,6 @@ jobs:
           deploymentName:  ${{ github.run_id }}
           template: ./infra/apiCenter.json          
           
-
       - uses: gliech/create-github-secret-action@v1
         with:
           name: APIM_NAME
@@ -70,4 +69,10 @@ jobs:
         with:
           name: AZURE_RESOURCE_GROUP
           value: ${{ steps.createResources.outputs.rgName }}
-          pa_token: ${{ secrets.PA_TOKEN }}          
+          pa_token: ${{ secrets.PA_TOKEN }}
+          
+      - uses: gliech/create-github-secret-action@v1
+        with:
+          name: API_CENTER_NAME
+          value: ${{ steps.createApiCenter.outputs.name }}
+          pa_token: ${{ secrets.PA_TOKEN }}               
