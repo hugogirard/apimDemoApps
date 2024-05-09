@@ -62,13 +62,13 @@ module api 'modules/web/web.bicep' = {
   }
 }
 
-module apicenter 'modules/apicenter/apicenter.bicep' = {
-  scope: rg
-  name: 'apicenter'
-  params: {
-    suffix: suffix
-  }
-}
+// module apicenter 'modules/apicenter/apicenter.bicep' = {
+//   scope: rg
+//   name: 'apicenter'
+//   params: {
+//     suffix: suffix
+//   }
+// }
 
 output apimName string = apim.outputs.apimName
 output fiboApiName string = api.outputs.fiboApiName

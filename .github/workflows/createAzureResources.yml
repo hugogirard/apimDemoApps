@@ -37,7 +37,19 @@ jobs:
           deploymentName:  ${{ github.run_id }}
           template: ./infra/main.bicep
           parameters: ./infra/main.bicepparam
-            
+      
+      # Free tier cannot be deployed right now with Bicep
+      - name: createResources
+        id: createApiCenter
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+          scope: subscription
+          region: ${{ env.LOCATION }}
+          deploymentName:  ${{ github.run_id }}
+          template: ./infra/apiCenter.json          
+          
+
       - uses: gliech/create-github-secret-action@v1
         with:
           name: APIM_NAME
