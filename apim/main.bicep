@@ -13,5 +13,6 @@ module productMath 'products/math.bicep' = {
   name: 'productMath'
   params: {
     ApimServiceName: ApimServiceName
+    fiboApiName: fiboapi.outputs.apiName
   }
 }

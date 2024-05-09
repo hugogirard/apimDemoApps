@@ -20,8 +20,7 @@ resource apiFibonacci 'Microsoft.ApiManagement/service/apis@2023-05-01-preview' 
     protocols: [
       'https'
     ]
-  }  
-  dependsOn: []
+  }    
 }
 
 resource policy 'Microsoft.ApiManagement/service/apis/policies@2023-05-01-preview' = {
@@ -32,3 +31,6 @@ resource policy 'Microsoft.ApiManagement/service/apis/policies@2023-05-01-previe
     value: loadTextContent('./policy.xml')
   }
 }
+
+
+output apiName string = apiFibonacci.name
