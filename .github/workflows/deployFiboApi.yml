@@ -70,7 +70,7 @@ jobs:
         with:
           tokenPrefix: '__'
           tokenSuffix: '__'
-          files: '["apis/FibonacciApi/policy.xml"]'
+          files: '["apim/apis/FibonacciApi/policy.xml"]'
         env:
           tenantid: ${{ secrets.TENANT_ID }}
           audience: ${{ secrets.AUDIENCE_FIBO_API }}
@@ -81,5 +81,5 @@ jobs:
         with:                   
           resourceGroupName: ${{ secrets.AZURE_RESOURCE_GROUP }}
           deploymentName:  ${{ github.run_id }}
-          template: ./apis/FibonacciApi/apiMetadata.bicep
-          parameters: ./apis/FibonacciApi/apiMetadata.bicepparam        
+          template: ./apim/main.bicep
+          parameters: ./apim/main.bicepparam        
