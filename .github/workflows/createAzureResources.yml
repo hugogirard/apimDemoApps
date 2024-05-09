@@ -43,9 +43,7 @@ jobs:
         id: createApiCenter
         uses: azure/arm-deploy@v1
         with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-          scope: subscription
-          region: ${{ env.LOCATION }}
+          resourceGroupName: ${{ steps.createResources.outputs.rgName }}          
           deploymentName:  ${{ github.run_id }}
           template: ./infra/apiCenter.json          
           
